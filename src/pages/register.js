@@ -1,8 +1,9 @@
 // src/pages/Register.js
-import React, { useState } from 'react'; 
-import { createUserWithEmailAndPassword } from 'firebase/auth'; 
-import { auth } from '../firebase-config'; 
+import React, { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'; // Import Firestore functions
 
 const Register = () => {
   // State to store user inputs (email and password) and error message
@@ -13,13 +14,23 @@ const Register = () => {
   // useNavigate hook helps with route navigation
   const navigate = useNavigate();
 
-  // Function to handle registration form submission
+  // Function to handle registration
   const handleRegister = async (e) => {
-    e.preventDefault(); // Prevent page reload on submission
+    e.preventDefault(); // Prevent page reload
     try {
-      // Create a new user with Firebase Authentication
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard'); // Redirect to dashboard on success
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Store user data in Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        name: '', // Optional: You can prompt user for a name
+        createdAt: serverTimestamp(), // Store the registration timestamp
+        isAdmin: false, // Default to non-admin
+      });
+
+      navigate('/dashboard'); // Redirect to dashboard
     } catch (error) {
       // Display an error if registration fails
       setError('Failed to register. Try again.');
@@ -35,12 +46,12 @@ const Register = () => {
         <input
           type="email"
           placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)} // Update email state
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)} // Update password state
+          onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Register</button>
       </form>
