@@ -1,31 +1,34 @@
 // src/App.js
-import React from 'react'; 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import LoginPage from './pages/LoginPage'; 
+import RegisterPage from './pages/RegisterPage'; 
+import WeatherPage from './pages/WeatherPage';
+import NewsPage from './pages/NewsPage';
+import NasaPage from './pages/NasaPage';
 
-const App = () => (
-  <Router>
-    {/* Navigation links to switch between Login, Register, and Dashboard */}
-    <nav>
-      <Link to="/">Login</Link>
-      <Link to="/register">Register</Link>
-      <Link to="/dashboard">Dashboard</Link>
-    </nav>
+function App() {
+  return (
+    <Router>
+      <nav>
+        <Link to="/">Dashboard</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+        <Link to="/weather">Weather</Link>
+        <Link to="/news">News</Link>
+        <Link to="/nasa">NASA</Link>
+      </nav>
 
-    {/* Define the routes for each page */}
-    <Routes>
-      {/* Route for the Login page */}
-      <Route path="/" element={<Login />} />
-
-      {/* Route for the Register page */}
-      <Route path="/register" element={<Register />} />
-
-      {/* Route for the Dashboard */}
-      <Route path="/dashboard" element={<Dashboard />} />
-    </Routes>
-  </Router>
-);
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/weather" element={<WeatherPage />} />
+        <Route path="/news" element={<NewsPage />} />
+        <Route path="/nasa" element={<NasaPage />} />
+      </Routes>
+    </Router>
+  );
+}
 
 export default App;

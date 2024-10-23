@@ -1,60 +1,60 @@
-// src/pages/Register.js
+// src/pages/RegisterPage.js
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 
-const Register = () => {
+const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState(''); // State to store user's name
+  const [name, setName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
-    e.preventDefault(); // Prevent page reload on submission
-
+    e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Store user data in Firestore with the name field
+      // Store the user data in Firestore
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
-        name: name, // Save the user's name
-        createdAt: serverTimestamp(), // Store the registration timestamp
-        isAdmin: false, // Default to non-admin
+        name: name,
+        createdAt: new Date(),
       });
 
-      navigate('/dashboard'); // Redirect to dashboard on success
+      navigate('/'); // Redirect to dashboard
     } catch (error) {
-      setError('Failed to register. Try again.');
-      console.error('Registration error:', error);
+      setError('Failed to register. Please try again.');
     }
   };
 
   return (
-    <div>
+    <div className="widget">
       <h2>Register</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleRegister}>
         <input
           type="text"
           placeholder="Name"
-          onChange={(e) => setName(e.target.value)} // Store user input in name state
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
         <input
           type="email"
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input
           type="password"
           placeholder="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
@@ -64,4 +64,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;
