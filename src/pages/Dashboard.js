@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
+import '../styles.css';
 
 const Dashboard = () => {
   // Fetch the current authenticated user
