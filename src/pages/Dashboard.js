@@ -1,17 +1,16 @@
 // src/pages/Dashboard.js
-import React, { useEffect } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase-config';
+import { auth, db } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
-import '../styles.css';
-import { collection, getDocs } from 'firebase/firestore'; // Import Firestore functions
-
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore'; // Firestore functions
+import '../styles.css'; // Import the CSS file
 
 const Dashboard = () => {
-  // Fetch the current authenticated user
-  const [user] = useAuthState(auth);
-  const [users, setUsers] = useState([]); // Store list of registered users
-  const navigate = useNavigate();
+  const [user] = useAuthState(auth); // Current authenticated user
+  const [userName, setUserName] = useState(''); // State to store user's name
+  const [users, setUsers] = useState([]); // State to store all registered users
+  const navigate = useNavigate(); // For page navigation
 
   // Redirect to login if the user is not authenticated
   useEffect(() => {
@@ -20,15 +19,39 @@ const Dashboard = () => {
     }
   }, [user, navigate]);
 
-   // Fetch users from Firestore collection
-   useEffect(() => {
-    const fetchUsers = async () => {
-      const usersCollection = collection(db, 'users');
-      const userDocs = await getDocs(usersCollection);
-      const userList = userDocs.docs.map(doc => doc.data());
-      setUsers(userList); // Store user data in state
+  // Fetch the current user's name from Firestore
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setUserName(data.name); // Store the user's name in state
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     };
-    fetchUsers();
+
+    if (user) {
+      fetchUserName(); // Fetch the user’s name on component mount
+    }
+  }, [user]);
+
+  // Fetch all registered users from Firestore
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const usersCollection = collection(db, 'users');
+        const userDocs = await getDocs(usersCollection); // Retrieve all user documents
+        const userList = userDocs.docs.map((doc) => doc.data()); // Map documents to user objects
+        setUsers(userList); // Store user data in state
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers(); // Fetch the users on component mount
   }, []);
 
   return (
@@ -40,6 +63,7 @@ const Dashboard = () => {
         <h2>User Profile</h2>
         {user ? (
           <div>
+            <p><strong>Name:</strong> {userName}</p>
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>User ID:</strong> {user.uid}</p>
           </div>
@@ -54,7 +78,10 @@ const Dashboard = () => {
         {users.length > 0 ? (
           <ul>
             {users.map((u, index) => (
-              <li key={index}>{u.email}</li> // Display each user's email
+              <li key={index}>
+                <strong>Name:</strong> {u.name} <br />
+                <strong>Email:</strong> {u.email}
+              </li>
             ))}
           </ul>
         ) : (
