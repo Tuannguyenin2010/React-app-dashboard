@@ -1,5 +1,7 @@
 // src/App.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './firebase-config';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import LoginPage from './pages/LoginPage';
@@ -10,11 +12,14 @@ import NasaPage from './pages/NasaPage';
 import './styles.css';
 
 function App() {
+  const [user] = useAuthState(auth); // Track authenticated user
+
   return (
     <Router>
       <div className="app-container">
-        <Sidebar />
-        <div className="content">
+        {/* Render Sidebar only if the user is logged in */}
+        {user && <Sidebar />}
+        <div className={`content ${user ? '' : 'full-width'}`}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<LoginPage />} />
