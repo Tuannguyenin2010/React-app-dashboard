@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../firebase-config';
-import { useNavigate } from 'react-router-dom';
 import { setDoc, doc } from 'firebase/firestore';
+import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -18,17 +18,16 @@ const RegisterPage = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Store the user data in Firestore
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
+        name,
         email: user.email,
-        name: name,
         createdAt: new Date(),
       });
 
-      navigate('/'); // Redirect to dashboard
+      navigate('/'); // Redirect to Dashboard
     } catch (error) {
-      setError('Failed to register. Please try again.');
+      setError('Registration failed. Please try again.');
     }
   };
 
@@ -60,6 +59,9 @@ const RegisterPage = () => {
         />
         <button type="submit">Register</button>
       </form>
+      <p>
+        Already have an account? <Link to="/login">Login here</Link>.
+      </p>
     </div>
   );
 };

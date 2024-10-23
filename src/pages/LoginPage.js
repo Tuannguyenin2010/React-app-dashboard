@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase-config';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -14,9 +14,9 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/'); // Redirect to dashboard on success
+      navigate('/'); // Redirect to Dashboard
     } catch (error) {
-      setError('Failed to log in. Please try again.');
+      setError('Incorrect email or password. Please try again.');
     }
   };
 
@@ -41,6 +41,9 @@ const LoginPage = () => {
         />
         <button type="submit">Login</button>
       </form>
+      <p>
+        Don't have an account? <Link to="/register">Register here</Link>.
+      </p>
     </div>
   );
 };

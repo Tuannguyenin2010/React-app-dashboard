@@ -2,23 +2,22 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebase-config';
+import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import '../styles.css';
-import NavigationBar from '../components/NavigationBar'; // Import NavigationBar
-import WeatherWidget from '../components/WeatherWidget'; // Import WeatherWidget
-import NewsWidget from '../components/NewsWidget'; // Import NewsWidget
-import NasaWidget from '../components/NasaWidget'; // Import NasaWidget
-import ChecklistWidget from '../components/ChecklistWidget'; // Import ChecklistWidget
-import CalculatorWidget from '../components/CalculatorWidget'; // Import CalculatorWidget
+import WeatherWidget from '../components/WeatherWidget';
+import NewsWidget from '../components/NewsWidget';
+import NasaWidget from '../components/NasaWidget';
+import ChecklistWidget from '../components/ChecklistWidget';
+import CalculatorWidget from '../components/CalculatorWidget';
 
 const Dashboard = () => {
-  const [user] = useAuthState(auth); // Track logged-in user
+  const [user] = useAuthState(auth); // Track the authenticated user
   const [userName, setUserName] = useState(''); // Store user's name
-  const [users, setUsers] = useState([]); // Store all registered users
-  const navigate = useNavigate(); // Navigate between pages
+  const [users, setUsers] = useState([]); // Store registered users
+  const navigate = useNavigate(); // Handle page navigation
 
-  // Redirect to login if the user is not authenticated
+  // Redirect to login page if the user is not authenticated
   useEffect(() => {
     if (!user) {
       navigate('/login');
@@ -54,19 +53,28 @@ const Dashboard = () => {
     fetchUsers();
   }, []);
 
+  // Handle user sign-out
+  const handleSignOut = async () => {
+    await signOut(auth);
+    navigate('/login'); // Redirect to login after sign-out
+  };
+
   return (
     <div>
-      <h1>Dashboard</h1>
-      <NavigationBar />
+      <h1>Welcome to the Dashboard</h1>
+      {user && (
+        <button onClick={handleSignOut} className="sign-out-button">
+          Sign Out
+        </button>
+      )}
 
       {/* User Profile Section */}
-      <section id="profile" className="widget">
+      <section className="widget">
         <h2>User Profile</h2>
         {user ? (
           <div>
             <p><strong>Name:</strong> {userName}</p>
             <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>User ID:</strong> {user.uid}</p>
           </div>
         ) : (
           <p>Loading user data...</p>
@@ -74,7 +82,7 @@ const Dashboard = () => {
       </section>
 
       {/* Registered Users Section */}
-      <section id="users" className="widget">
+      <section className="widget">
         <h2>Registered Users</h2>
         <ul>
           {users.map((u, index) => (
@@ -87,27 +95,27 @@ const Dashboard = () => {
       </section>
 
       {/* Weather Widget Section */}
-      <section id="weather" className="widget">
+      <section className="widget">
         <WeatherWidget />
       </section>
 
       {/* News Widget Section */}
-      <section id="news" className="widget">
+      <section className="widget">
         <NewsWidget />
       </section>
 
       {/* NASA Widget Section */}
-      <section id="nasa" className="widget">
+      <section className="widget">
         <NasaWidget />
       </section>
 
       {/* Checklist Widget Section */}
-      <section id="checklist" className="widget">
+      <section className="widget">
         <ChecklistWidget />
       </section>
 
       {/* Calculator Widget Section */}
-      <section id="calculator" className="widget">
+      <section className="widget">
         <CalculatorWidget />
       </section>
     </div>
