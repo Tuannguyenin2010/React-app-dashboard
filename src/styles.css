@@ -5,21 +5,27 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f5f5f5;
     color: #212121;
+    height: 100vh; /* Full height to ensure layout consistency */
   }
   
   /* App Layout */
   .app-container {
     display: flex;
-    min-height: 100vh;
+    min-height: 100vh; /* Ensure full height layout */
   }
   
   /* Sidebar Styling */
   .sidebar {
+    display: flex;
+    flex-direction: column; /* Align children vertically */
+    justify-content: space-between; /* Push sign-out button to the bottom */
     width: 250px;
-    background-color: #6200ea; 
+    background-color: #6200ea;
     padding: 20px;
     color: white;
-    height: 100vh;
+    height: 100vh; /* Full height for sidebar */
+    position: sticky;
+    top: 0; /* Sidebar stays at the top when scrolling */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   }
   
@@ -29,10 +35,12 @@ body {
     color: #FFFFFF;
   }
   
+  /* Sidebar Menu Styling */
   .sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    flex-grow: 1; /* Push sign-out button to the bottom */
   }
   
   .sidebar ul li {
@@ -46,25 +54,18 @@ body {
     font-size: 1.1rem;
     padding: 15px;
     border-radius: 8px;
-    background-color: #6200ea; /* Mid Purple for Links */
+    background-color: #6200ea;
     text-decoration: none;
     transition: background-color 0.3s;
   }
   
-  /* Ensure text stays visible with better background */
-  .sidebar ul li a:visited,
-  .sidebar ul li a:active {
-    color: white;
-  }
-  
   .sidebar ul li a:hover {
-    background-color: #3700b3; /* Lighter Purple on Hover */
+    background-color: #3700b3;
   }
   
-  /* Sidebar Sign Out Button */
+  /* Sidebar Sign Out Button Styling */
   .sidebar-signout-button {
-    width: 100%;
-    background-color: #98151e;
+    background-color: #f44336;
     color: white;
     border: none;
     padding: 15px;
@@ -76,7 +77,7 @@ body {
   }
   
   .sidebar-signout-button:hover {
-    background-color: #620a0a;
+    background-color: #d32f2f;
   }
   
   /* Content Styling */
@@ -97,7 +98,7 @@ body {
   h1 {
     text-align: center;
     margin: 0;
-    padding-bottom: 20px;
+    padding: 40px 0 20px;
   }
   
   /* Widget Styling */
@@ -109,27 +110,71 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   
-  /* Form Input Styling */
+  /* List Items in Widgets */
+  .widget ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .widget li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Form Container Styling for Login/Register */
+  .form-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Form Heading */
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+  
+  /* Input Field Styling (Login/Register) */
   input {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 15px; /* Adjusted padding for better usability */
+    margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #f0f4ff; /* Light background for clarity */
   }
   
+  /* Button Styling */
   button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #6200ea;
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
+    transition: background-color 0.3s;
     margin-top: 10px;
   }
   
@@ -137,18 +182,64 @@ body {
     background-color: #3700b3;
   }
   
-  /* List Styling */
-  ul {
-    list-style: none;
-    padding: 0;
+  /* Link Styling for Login/Register */
+  .form-container a {
+    text-decoration: none;
+    color: #6200ea;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
   }
   
-  li {
-    background-color: #f9f9f9;
+  .form-container a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Calculator Widget Styling */
+  .calculator-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .calculator-widget input {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 1.5rem;
+    text-align: right;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 8px;
+  }
+  
+  /* Grid Layout for Calculator Buttons */
+  .calculator-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .calculator-grid button {
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    padding: 20px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .calculator-grid button:hover {
+    background-color: #3700b3;
+  }
+  
+  /* Calculator Result */
+  .calculator-widget h3 {
+    margin-top: 10px;
   }
   
   /* Responsive Design */
