@@ -1,6 +1,6 @@
 /* src/styles.css */
 
-/* General Styling for the Dashboard Page */
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -8,7 +8,7 @@ body {
     padding: 0;
   }
   
-  /* Styling for each widget */
+  /* Widget Styles */
   .widget {
     background-color: white;
     border: 1px solid #ddd;
@@ -21,16 +21,16 @@ body {
     margin-right: auto;
   }
   
-  /* Headings within Widgets */
+  /* Headings inside Widgets */
   .widget h2 {
     margin-top: 0;
     font-size: 1.5rem;
     color: #333;
   }
   
-  /* User List Styling */
+  /* List Styles */
   .widget ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
   }
   
@@ -42,13 +42,14 @@ body {
     margin-bottom: 8px;
   }
   
-  .widget ul li strong {
-    display: inline-block;
-    width: 80px;
-    font-weight: 600;
+  /* Video embed container for better responsiveness */
+  iframe {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
   }
   
-  /* Media Query for Mobile Devices */
+  /* Media Queries for Mobile Devices */
   @media (max-width: 600px) {
     .widget {
       width: 90%;
@@ -56,7 +57,7 @@ body {
     }
   
     .widget h2 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
   
     .widget ul li {

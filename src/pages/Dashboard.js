@@ -5,6 +5,7 @@ import { auth, db } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import '../styles.css';
+import NavigationBar from '../components/NavigationBar'; 
 
 const Dashboard = () => {
   const [user] = useAuthState(auth);
@@ -51,7 +52,10 @@ const Dashboard = () => {
     <div>
       <h1>Dashboard</h1>
 
-      <div className="widget">
+      {/* Render the NavigationBar */}
+      <NavigationBar />
+
+      <section id="profile" className="widget">
         <h2>User Profile</h2>
         {user ? (
           <div>
@@ -62,9 +66,9 @@ const Dashboard = () => {
         ) : (
           <p>Loading user data...</p>
         )}
-      </div>
+      </section>
 
-      <div className="widget">
+      <section id="users" className="widget">
         <h2>Registered Users</h2>
         <ul>
           {users.map((u, index) => (
@@ -74,14 +78,23 @@ const Dashboard = () => {
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
-      <WeatherWidget />
-      <NewsWidget />
-      <NasaWidget />
+      <section id="weather" className="widget">
+        <WeatherWidget />
+      </section>
+
+      <section id="news" className="widget">
+        <NewsWidget />
+      </section>
+
+      <section id="nasa" className="widget">
+        <NasaWidget />
+      </section>
     </div>
   );
 };
+
 
 const WeatherWidget = () => {
   const [weather, setWeather] = useState(null);
