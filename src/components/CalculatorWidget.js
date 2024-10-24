@@ -1,3 +1,7 @@
+// src/components/CalculatorWidget.js
+import React, { useState } from 'react';
+import { evaluate } from 'mathjs'; 
+
 // Component: CalculatorWidget - A simple calculator for basic arithmetic operations
 const CalculatorWidget = () => {
   // State for managing input expression and result
