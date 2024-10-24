@@ -2,22 +2,25 @@
 import React, { useState } from 'react';
 
 const ChecklistWidget = () => {
-  const [tasks, setTasks] = useState([]); // Store tasks
-  const [task, setTask] = useState(''); // Store new task input
+  const [tasks, setTasks] = useState([]); // Manage the list of tasks
+  const [task, setTask] = useState(''); // Manage input for a new task
 
+  // Add a new task if the input is not empty
   const handleAddTask = () => {
     if (task.trim()) {
       setTasks([...tasks, { text: task, completed: false }]);
-      setTask('');
+      setTask(''); // Clear input after adding
     }
   };
 
+  // Toggle task completion status
   const toggleTask = (index) => {
     const newTasks = [...tasks];
     newTasks[index].completed = !newTasks[index].completed;
     setTasks(newTasks);
   };
 
+  // Render the checklist UI
   return (
     <div className="widget">
       <h2>Checklist</h2>
@@ -32,9 +35,9 @@ const ChecklistWidget = () => {
         {tasks.map((t, index) => (
           <li
             key={index}
-            onClick={() => toggleTask(index)}
+            onClick={() => toggleTask(index)} // Toggle completion on click
             style={{
-              textDecoration: t.completed ? 'line-through' : 'none',
+              textDecoration: t.completed ? 'line-through' : 'none', // Strike-through for completed tasks
               cursor: 'pointer',
             }}
           >
@@ -46,4 +49,4 @@ const ChecklistWidget = () => {
   );
 };
 
-export default ChecklistWidget;
+export default ChecklistWidget; // Export the component

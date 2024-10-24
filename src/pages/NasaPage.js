@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 
 const NasaPage = () => {
-  const [apod, setApod] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [apod, setApod] = useState(null); // Store APOD data
+  const [loading, setLoading] = useState(true); // Track loading state
 
+  // Fetch APOD data when the component mounts
   useEffect(() => {
     const fetchApod = async () => {
       try {
@@ -12,16 +13,17 @@ const NasaPage = () => {
           `https://api.nasa.gov/planetary/apod?api_key=0aT1mzRNXlmedoOPgFfORKOJpKCFbdaQXDVyoe8p`
         );
         const data = await response.json();
-        setApod(data);
+        setApod(data); // Store fetched data
       } catch (error) {
         console.error('Error fetching APOD:', error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading indicator
       }
     };
     fetchApod();
-  }, []);
+  }, []); // Run once on mount
 
+  // Render media based on its type (image or video)
   const renderMedia = () => {
     if (apod.media_type === 'image') {
       return <img src={apod.url} alt={apod.title} style={{ maxWidth: '100%' }} />;
@@ -51,26 +53,34 @@ const NasaPage = () => {
         );
       }
     } else {
-      return <p>Unsupported media type. View it <a href={apod.url} target="_blank" rel="noopener noreferrer">here</a>.</p>;
+      return (
+        <p>
+          Unsupported media type. View it{' '}
+          <a href={apod.url} target="_blank" rel="noopener noreferrer">
+            here
+          </a>.
+        </p>
+      );
     }
   };
 
+  // Render the APOD widget UI
   return (
     <div className="widget">
       <h2>Astronomy Picture of the Day</h2>
       {loading ? (
-        <p>Loading APOD...</p>
+        <p>Loading APOD...</p> // Show loading message
       ) : apod ? (
         <div>
           <h3>{apod.title}</h3>
-          {renderMedia()}
-          <p>{apod.explanation}</p>
+          {renderMedia()} {/* Render media content */}
+          <p>{apod.explanation}</p> {/* Display APOD explanation */}
         </div>
       ) : (
-        <p>No APOD available.</p>
+        <p>No APOD available.</p> // Handle missing data
       )}
     </div>
   );
 };
 
-export default NasaPage;
+export default NasaPage; // Export the component

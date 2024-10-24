@@ -2,12 +2,16 @@
 import React from 'react';
 
 const NavigationBar = () => (
-  <nav style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    gap: '20px', 
-    margin: '20px 0' 
-  }}>
+  // Render a navigation bar with centered links
+  <nav
+    style={{
+      display: 'flex', // Use flexbox for layout
+      justifyContent: 'center', // Center the links horizontally
+      gap: '20px', // Space between links
+      margin: '20px 0' // Vertical margin
+    }}
+  >
+    {/* Navigation links to different sections */}
     <a href="#profile" style={{ textDecoration: 'none' }}>Profile</a>
     <a href="#users" style={{ textDecoration: 'none' }}>Users</a>
     <a href="#weather" style={{ textDecoration: 'none' }}>Weather</a>
@@ -16,4 +20,4 @@ const NavigationBar = () => (
   </nav>
 );
 
-export default NavigationBar;
+export default NavigationBar; // Export the component
